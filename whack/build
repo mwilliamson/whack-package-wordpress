@@ -3,6 +3,7 @@
 set -e
 
 ROOT_DIR=`pwd`
+BUILD_DIR=${ROOT_DIR}/build-dir
 
 . $(dirname $0)/set-versions
 
@@ -27,4 +28,6 @@ mkdir -p ${APACHE2_DIR}/srclib/apr-util
 tar xzf apr-util-${APR_UTIL_VERSION}.tar.gz --directory ${APACHE2_DIR}/srclib/apr-util --strip-components 1
 
 cd ${APACHE2_DIR}
-./configure --with-pcre=${PCRE_DIR}
+./configure --with-pcre=${PCRE_DIR} --prefix=${BUILD_DIR}
+make
+make install
