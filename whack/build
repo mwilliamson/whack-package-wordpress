@@ -40,4 +40,16 @@ build_apache2() {
     cd ${ROOT_DIR}
 }
 
+build_php() {
+    PHP_SRC_DIR=php-${PHP_VERSION}
+    PHP_DIR=${BUILD_DIR}/php5
+    
+    tar xzf php-${PHP_VERSION}.tar.gz
+    cd ${PHP_SRC_DIR}
+    ./configure --prefix=${PHP_DIR} --with-apxs2=${APACHE2_DIR}/bin/apxs --with-mysql
+    make
+    make install
+}
+
 build_apache2
+build_php
