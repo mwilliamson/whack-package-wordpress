@@ -42,6 +42,8 @@ build_apache2() {
     make
     make install
     
+    echo ${APACHE2_DIR} > ${ROOT_DIR}/APACHE2_DIR
+    
     cd ${ROOT_DIR}
 }
 
