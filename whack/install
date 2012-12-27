@@ -1,3 +1,8 @@
 #!/usr/bin/env sh
 
 set -e
+
+BUILD_DIR=`pwd`/build-dir
+INSTALL_DIR=$1
+
+cp -rT ${BUILD_DIR} ${INSTALL_DIR}
