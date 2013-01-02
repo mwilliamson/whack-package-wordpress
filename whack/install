@@ -1,12 +1,38 @@
 #!/usr/bin/env sh
 
 set -e
+set -x
 
-BUILD_DIR=`pwd`/build-dir
+. $(dirname $0)/set-versions
+
+ROOT_DIR=`pwd`
 INSTALL_DIR=$1
-ORIGINAL_APACHE2_DIR=`cat APACHE2_DIR`
-INSTALL_APACHE2_DIR=${INSTALL_DIR}/apache2
 
-cp -rT ${BUILD_DIR} ${INSTALL_DIR}
-cd ${INSTALL_APACHE2_DIR}
-find conf -type f -print0 | xargs -0 sed -i -e s,${ORIGINAL_APACHE2_DIR},${INSTALL_APACHE2_DIR},g
+# TODO: should track dependency externally, otherwise the output of this command
+# is dependent on the current state of the branch master, which breaks caching
+whack install \
+    git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git \
+    "${INSTALL_DIR}"
+
+WORDPRESS_DIR="${INSTALL_DIR}/wordpress"
+PEAR="${INSTALL_DIR}/.bin/pear"
+
+mkdir -p "${WORDPRESS_DIR}"
+tar xzf wordpress.tar.gz --directory "${WORDPRESS_DIR}" --strip-components 1
+
+# TODO: can we cache PEAR packages?
+"$PEAR" channel-discover wp-cli.org/pear
+"$PEAR" install wpcli/wpcli-0.7.0
+WP_CLI="${INSTALL_DIR}/.bin/wp"
+#~ WP_CLI_DIR="${INSTALL_DIR}/wp-cli"
+#~ WP_CLI="${WP_CLI_DIR}/src/bin/wp"
+#~ mkdir -p "${WP_CLI_DIR}"
+#~ tar xzf wp-cli.tar.gz --directory "${WP_CLI_DIR}" --strip-components 1
+#~ 
+#~ ln -s wp-cli/src/wp "${INSTALL_DIR}/.bin/wp"
+
+# Need to install MySQL
+
+#~ cd ${WORDPRESS_DIR}
+#~ "$WP_CLI" core config --dbname...
+#~ "$WP_CLI" core install
