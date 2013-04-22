@@ -26,14 +26,14 @@ def deploying_wordpress_shows_front_page():
 
 def install_wordpress(directory, port):
     path = os.path.join(os.path.dirname(__file__), "..")
-    subprocess.check_call(["whack", "install", path, directory, "--no-cache"])
+    subprocess.check_call(["whack", "install", path, directory, "--disable-cache"])
     
-    conf_path = os.path.join(directory, "conf/httpd.conf")
-    with open(conf_path, "r") as conf_file:
-        original_conf_contents = conf_file.read()
-    conf_contents = original_conf_contents.replace("Listen 80", "Listen {0}".format(port))
-    with open(conf_path, "w") as conf_file:
-        conf_file.write(conf_contents)
+    #~ conf_path = os.path.join(directory, "conf/httpd.conf")
+    #~ with open(conf_path, "r") as conf_file:
+        #~ original_conf_contents = conf_file.read()
+    #~ conf_contents = original_conf_contents.replace("Listen 80", "Listen {0}".format(port))
+    #~ with open(conf_path, "w") as conf_file:
+        #~ conf_file.write(conf_contents)
 
 def hello_world_post_is_visible(port):
     url = "http://localhost:{0}/".format(port)

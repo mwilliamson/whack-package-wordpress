@@ -2,7 +2,4 @@
 
 set -e
 
-. $(dirname $0)/set-versions
-
-echo https://github.com/wp-cli/wp-cli/archive/v${WP_CLI_VERSION}.tar.gz wp-cli.tar.gz
 echo https://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz wordpress.tar.gz

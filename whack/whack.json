@@ -1,3 +1,8 @@
 {
-    "template": "fixed-root"
+    "name": "wordpress",
+    "paramSlug": "{wordpress_version}",
+    "defaultParams": {
+        "wordpress_version": "3.5.1"
+    },
+    "sourcePaths": ["whack"]
 }
