@@ -21,14 +21,14 @@ tar xzf wordpress.tar.gz --directory "${WORDPRESS_DIR}" --strip-components 1
 mkdir -p "${WP_CLI_DIR}"
 curl -L http://wp-cli.org/packages/phar/wp-cli.phar > "${WP_CLI_DIR}/wp-cli.phar"
 echo '#!/usr/bin/env sh' > "${WP_CLI_DIR}/wp"
-echo "exec '${INSTALL_DIR}/bin/php' '${WP_CLI_DIR}/wp-cli.phar'" '"$@"' >> "${WP_CLI_DIR}/wp"
+echo "exec '${INSTALL_DIR}/bin/php' '${WP_CLI_DIR}/wp-cli.phar' --path='${WORDPRESS_DIR}'" '"$@"' >> "${WP_CLI_DIR}/wp"
 chmod +x "${WP_CLI_DIR}/wp"
 cp "${WP_CLI_DIR}/wp" "${INSTALL_DIR}/.bin/wp"
 
 # TODO: at this point we want to stop the build, and allow the remaining steps
 # to be run as part of deployment
 
-"${WP_CLI_DIR}/wp" --path="${WORDPRESS_DIR}" core config  \
+"${WP_CLI_DIR}/wp" core config  \
     --dbname="${MYSQL_DATABASE}" \
     --dbuser="${MYSQL_USERNAME}" \
     --dbpass="${MYSQL_PASSWORD}" \
@@ -37,8 +37,8 @@ cp "${WP_CLI_DIR}/wp" "${INSTALL_DIR}/.bin/wp"
 sed -i s!/usr/local/whack/htdocs!"${WORDPRESS_DIR}"!g "${INSTALL_DIR}/conf/httpd.conf"
 sed -i "s!Listen 80!Listen ${PORT}!g" "${INSTALL_DIR}/conf/httpd.conf"
 sed -i "s!DirectoryIndex index.html!DirectoryIndex index.php index.html!g" "${INSTALL_DIR}/conf/httpd.conf"
-"${WP_CLI_DIR}/wp" --path="${WORDPRESS_DIR}" core is-installed || \
-    "${WP_CLI_DIR}/wp" --path="${WORDPRESS_DIR}" core install \
+"${WP_CLI_DIR}/wp" core is-installed || \
+    "${WP_CLI_DIR}/wp" core install \
         --url=http://localhost:"${PORT}"/ \
         --title='Development WordPress site' \
         --admin_email=admin@example.com \
