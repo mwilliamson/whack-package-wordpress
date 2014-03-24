@@ -9,8 +9,9 @@ INSTALL_DIR=$1
 # TODO: should track dependency externally, otherwise the output of this command
 # is dependent on the current state of the branch master, which breaks caching
 whack install \
-    'git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git#c1a96fd65496d92636208c3d99e5324c8a86adc5' \
-    "${INSTALL_DIR}"
+    'git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git#f1bde9d' \
+    "${INSTALL_DIR}" \
+    -pWITH_OPENSSL=1
 
 WORDPRESS_DIR="${INSTALL_DIR}/wordpress"
 WP_CLI_DIR="${INSTALL_DIR}/wp-cli"
@@ -19,7 +20,7 @@ mkdir -p "${WORDPRESS_DIR}"
 tar xzf wordpress.tar.gz --directory "${WORDPRESS_DIR}" --strip-components 1
 
 mkdir -p "${WP_CLI_DIR}"
-curl -L http://wp-cli.org/packages/phar/wp-cli.phar > "${WP_CLI_DIR}/wp-cli.phar"
+curl -L https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar > "${WP_CLI_DIR}/wp-cli.phar"
 echo '#!/usr/bin/env sh' > "${WP_CLI_DIR}/wp"
 echo "exec '${INSTALL_DIR}/bin/php' '${WP_CLI_DIR}/wp-cli.phar' --path='${WORDPRESS_DIR}'" '"$@"' >> "${WP_CLI_DIR}/wp"
 chmod +x "${WP_CLI_DIR}/wp"
@@ -32,7 +33,7 @@ cp "${WP_CLI_DIR}/wp" "${INSTALL_DIR}/.bin/wp"
     --dbname="${MYSQL_DATABASE}" \
     --dbuser="${MYSQL_USERNAME}" \
     --dbpass="${MYSQL_PASSWORD}" \
-    --dbhost="${MYSQL_HOST-localhost}"
+    --dbhost="${MYSQL_HOST-127.0.0.1}"
     
 sed -i s!/usr/local/whack/htdocs!"${WORDPRESS_DIR}"!g "${INSTALL_DIR}/conf/httpd.conf"
 sed -i "s!Listen 80!Listen ${PORT}!g" "${INSTALL_DIR}/conf/httpd.conf"
