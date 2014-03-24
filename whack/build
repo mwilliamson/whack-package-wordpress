@@ -9,9 +9,10 @@ INSTALL_DIR=$1
 # TODO: should track dependency externally, otherwise the output of this command
 # is dependent on the current state of the branch master, which breaks caching
 whack install \
-    'git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git#f1bde9d' \
+    'git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git#4a9b72a' \
     "${INSTALL_DIR}" \
-    -pWITH_OPENSSL=1
+    -pWITH_OPENSSL=1 \
+    -pWITH_ZLIB=1
 
 WORDPRESS_DIR="${INSTALL_DIR}/wordpress"
 WP_CLI_DIR="${INSTALL_DIR}/wp-cli"
