@@ -2,7 +2,7 @@
     "name": "wordpress",
     "paramSlug": "{wordpress_version}",
     "defaultParams": {
-        "wordpress_version": "3.8.1"
+        "wordpress_version": "3.9"
     },
     "sourcePaths": ["whack"]
 }
