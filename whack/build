@@ -9,7 +9,7 @@ INSTALL_DIR=$1
 # TODO: should track dependency externally, otherwise the output of this command
 # is dependent on the current state of the branch master, which breaks caching
 whack install \
-    'git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git#4a9b72a' \
+    'git+https://github.com/mwilliamson/whack-package-apache2-mod-php5.git#dbd8865' \
     "${INSTALL_DIR}" \
     -pWITH_OPENSSL=1 \
     -pWITH_ZLIB=1
